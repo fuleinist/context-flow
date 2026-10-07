@@ -18,7 +18,6 @@ export function classifyContent(text: string): ContentKind {
   if (text.length === 0) return "prose";
   let cjk = 0;
   let symbolish = 0;
-  let space = 0;
   for (const ch of text) {
     const c = ch.codePointAt(0) ?? 0;
     if (
@@ -29,17 +28,14 @@ export function classifyContent(text: string): ContentKind {
       cjk++;
     } else if ("{}()[]<>;=+-*/&|!?:_#$%@~`\\\"'".includes(ch)) {
       symbolish++;
-    } else if (ch === " " || ch === "\t" || ch === "\n") {
-      space++;
     }
   }
   const cjkRatio = cjk / text.length;
   if (cjkRatio > 0.2) return "cjk";
   const symbolRatio = symbolish / text.length;
-  const spaceRatio = space / text.length;
-  // Code tends to have many symbols and few spaces; prose has ~15-20% spaces.
-  if (symbolRatio > 0.08 && spaceRatio < 0.14) return "code";
-  if (symbolRatio > 0.12) return "mixed";
+  // Code has a much higher symbol density than prose (prose is typically <2%).
+  if (symbolRatio >= 0.05) return "code";
+  if (symbolRatio >= 0.03) return "mixed";
   return "prose";
 }
 

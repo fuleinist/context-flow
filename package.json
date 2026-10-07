@@ -88,7 +88,7 @@
   "scripts": {
     "compile": "tsc -p tsconfig.json",
     "watch": "tsc -p tsconfig.json --watch",
-    "test": "node --test test/",
+    "test": "node --test \"test/*.test.cjs\"",
     "vscode:prepublish": "npm run compile"
   },
   "devDependencies": {
