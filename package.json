@@ -1,0 +1,99 @@
+{
+  "name": "context-flow",
+  "displayName": "Context Flow",
+  "description": "Visualize your AI assistant's context window in real time: what's included, what's cached, what to add or remove.",
+  "version": "0.1.0",
+  "publisher": "fuleinist",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "ai",
+    "context-window",
+    "tokens",
+    "cursor",
+    "claude"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "contextFlow.openDashboard",
+        "title": "Context Flow: Open Dashboard"
+      },
+      {
+        "command": "contextFlow.copyReport",
+        "title": "Context Flow: Copy Report"
+      },
+      {
+        "command": "contextFlow.setProfile",
+        "title": "Context Flow: Set Model Profile"
+      },
+      {
+        "command": "contextFlow.refresh",
+        "title": "Context Flow: Refresh Now"
+      }
+    ],
+    "configuration": {
+      "title": "Context Flow",
+      "properties": {
+        "contextFlow.windowSize": {
+          "type": "number",
+          "default": 200000,
+          "description": "Context window size in tokens for the active model profile."
+        },
+        "contextFlow.profiles": {
+          "type": "object",
+          "default": {
+            "claude-200k": 200000,
+            "gpt-128k": 128000,
+            "gemini-1m": 1000000
+          },
+          "description": "Named model profiles mapping to window sizes in tokens."
+        },
+        "contextFlow.activeProfile": {
+          "type": "string",
+          "default": "claude-200k",
+          "description": "Active model profile name."
+        },
+        "contextFlow.refreshDebounceMs": {
+          "type": "number",
+          "default": 500,
+          "description": "Debounce delay for dashboard auto-refresh."
+        },
+        "contextFlow.excludeGlobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/out/**",
+            "**/dist/**",
+            "**/.git/**"
+          ],
+          "description": "Globs excluded from workspace scanning."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "test": "node --test test/",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.6.0"
+  }
+}
